@@ -20,6 +20,18 @@ python -m http.server 8000
 
 接著前往 `http://localhost:8000`。專案不需要安裝套件或執行建置流程。
 
+### 手動部署到 Cloudflare Pages
+
+在專案根目錄執行以下指令，產生只包含網站檔案的 `dist/` 資料夾：
+
+```sh
+node scripts/prepare-pages.mjs
+```
+
+接著在 Cloudflare 控制台建立 Pages 專案，選擇 **Direct Upload / Drag and drop**，上傳 `dist/` 資料夾並部署。更新網站時，重新執行指令，再上傳新的 `dist/`。`dist/` 是產生檔，不會提交到 GitHub。
+
+請留意：Cloudflare 的 Direct Upload 專案之後不能直接改成 Git 整合自動部署；若未來要改用 Git 自動部署，需要另建一個 Pages 專案。
+
 ### 操作方式
 
 - 電腦：左右方向鍵或 A／D 移動，空白鍵跳躍；滑鼠選擇卡牌。
@@ -61,6 +73,18 @@ python -m http.server 8000
 
 Visit `http://localhost:8000`. No package installation or build step is required.
 
+### Manual deployment to Cloudflare Pages
+
+From the project root, prepare a clean `dist/` folder containing only the site files:
+
+```sh
+node scripts/prepare-pages.mjs
+```
+
+In the Cloudflare dashboard, create a Pages project with **Direct Upload / Drag and drop**, upload the `dist/` folder, and deploy. Repeat the command and upload the new folder when updating the site. The generated `dist/` folder is not committed to GitHub.
+
+Cloudflare Direct Upload projects cannot later be switched to Git integration. Moving to automatic Git deployments requires creating a separate Pages project.
+
 ### Controls
 
 - Desktop: Left and Right Arrow keys or A/D to move; Space to jump; use the mouse for cards.
@@ -90,6 +114,18 @@ python -m http.server 8000
 ```
 
 `http://localhost:8000` にアクセスしてください。パッケージのインストールやビルドは不要です。
+
+### Cloudflare Pages への手動デプロイ
+
+プロジェクトのルートで次のコマンドを実行し、サイト用ファイルだけを含む `dist/` フォルダーを作成します。
+
+```sh
+node scripts/prepare-pages.mjs
+```
+
+Cloudflare ダッシュボードで **Direct Upload / Drag and drop** を選んで Pages プロジェクトを作成し、`dist/` フォルダーをアップロードしてデプロイします。更新時はコマンドを再実行し、新しい `dist/` をアップロードしてください。生成された `dist/` は GitHub にコミットされません。
+
+Cloudflare の Direct Upload プロジェクトは、後から Git 連携に切り替えられません。Git による自動デプロイへ移行する場合は、別の Pages プロジェクトを作成する必要があります。
 
 ### 操作方法
 
