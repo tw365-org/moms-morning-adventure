@@ -1,0 +1,94 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#f5e8c8">
+  <meta name="description" content="陪媽媽和小狐狸走一段晨光小徑，找回用品、互相幫忙，也記得停下來休息。">
+  <link rel="icon" type="image/svg+xml" href="favicon.svg">
+  <title>媽媽的晨光冒險｜晨光啟程</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <main class="app-shell">
+    <header class="topbar">
+      <a class="brand" href="#" aria-label="媽媽的晨光冒險首頁">
+        <span class="brand-mark" aria-hidden="true">✿</span>
+        <span><strong>晨光小徑</strong><small>一段慢慢走的冒險</small></span>
+      </a>
+      <div class="top-actions">
+        <span class="chapter-pill"><span class="sun-dot"></span> 第一章・晨光啟程</span>
+        <button class="icon-button" id="soundToggle" aria-label="關閉音樂" title="音樂開關">♫</button>
+        <button class="icon-button" id="pauseButton" aria-label="暫停遊戲" title="暫停">Ⅱ</button>
+      </div>
+    </header>
+
+    <section class="game-wrap" aria-label="遊戲場景">
+      <div class="scene-topline">
+        <div><span class="eyebrow">今天不用趕路</span><h1 id="sceneTitle">晨光啟程</h1></div>
+        <div class="progress-block"><span id="progressLabel">沿著小徑慢慢走</span><div class="progress-track"><span id="progressFill"></span></div></div>
+      </div>
+      <div class="canvas-frame">
+        <canvas id="gameCanvas" aria-label="媽媽與小狐狸在晨光森林裡散步"></canvas>
+        <div class="canvas-chip"><span class="sparkle">✦</span><span id="sceneHint">左右移動，靠近前方的光點</span></div>
+        <div class="toast" id="toast" role="status" aria-live="polite"></div>
+      </div>
+
+      <div class="under-scene">
+        <section class="hand-section" aria-label="行動卡牌">
+          <div class="section-heading"><div><span class="eyebrow">你的口袋小幫手</span><h2>行動卡 <span id="handCount">3 / 3</span></h2></div><button class="text-button" id="cardHelp">卡牌怎麼用？</button></div>
+          <div class="hand" id="hand" role="list"></div>
+        </section>
+        <section class="controls" aria-label="移動控制">
+          <div class="control-copy"><span class="eyebrow">探索小徑</span><p>慢慢走就好，沒有時間限制。</p><span class="keyboard-hint">鍵盤：← → 或 A D 移動・空白鍵跳躍</span></div>
+          <div class="touch-controls">
+            <button class="move-button" data-move="left" aria-label="向左移動">←</button>
+            <button class="move-button" data-move="right" aria-label="向右移動">→</button>
+            <button class="jump-button" id="jumpButton" aria-label="跳躍"><span>↑</span><small>跳一下</small></button>
+          </div>
+        </section>
+      </div>
+      <footer class="game-footer"><span>進度只存在這個瀏覽器</span><span>v1.0.0 <i>·</i> 中揚資訊</span></footer>
+    </section>
+
+    <div class="screen" id="titleScreen" role="dialog" aria-modal="true" aria-labelledby="welcomeTitle">
+      <div class="welcome-card">
+        <div class="welcome-art" aria-hidden="true"><div class="art-sun"></div><span class="art-flower f1">✿</span><span class="art-flower f2">✿</span><span class="art-leaf">❧</span><div class="art-mom">☻</div><div class="art-fox">●</div></div>
+        <span class="eyebrow">給辛苦的你，一段自己的時間</span>
+        <h2 id="welcomeTitle">今天，先走一小段<br><em>再休息也來得及。</em></h2>
+        <p>陪媽媽和迷路的小狐狸走過一段晨光小徑。沒有倒數，也沒有做不完的任務，想停下來時就停一下。</p>
+        <div class="welcome-actions"><button class="primary-button" id="startButton">開始這段旅程 <span>→</span></button><button class="secondary-button hidden" id="continueButton">接著上次散步</button></div>
+        <div class="welcome-meta"><span>✦ 約 5–10 分鐘</span><span>☼ 隨時可以暫停</span><span>♡ 進度自動保存</span></div>
+      </div>
+    </div>
+
+    <div class="screen hidden" id="eventScreen" role="dialog" aria-modal="true" aria-labelledby="eventTitle">
+      <article class="event-card">
+        <div class="event-illustration" id="eventIllustration" aria-hidden="true"><span>✦</span></div>
+        <div class="event-content"><span class="eyebrow" id="eventStep">一段小插曲</span><h2 id="eventTitle"></h2><p class="event-copy" id="eventCopy"></p><div class="event-flavor" id="eventFlavor"></div>
+          <div class="combo-note hidden" id="comboNote">✦ 小提示：同時選擇「出發檢查」和「一起整理」，可以找到一件額外用品。</div>
+          <div class="event-choices" id="eventChoices"></div>
+          <button class="ordinary-button" id="ordinaryButton">先用普通的方法處理</button>
+        </div>
+      </article>
+    </div>
+
+    <div class="screen hidden" id="pauseScreen" role="dialog" aria-modal="true" aria-labelledby="pauseTitle">
+      <section class="small-modal"><span class="eyebrow">把時間留給自己</span><h2 id="pauseTitle">歇一會兒</h2><p>小徑會在這裡等你。</p>
+        <div class="settings-row"><span>背景音樂</span><button class="switch" id="musicSwitch" role="switch" aria-checked="false"><i></i></button></div>
+        <div class="settings-row"><span>柔和音效</span><button class="switch on" id="sfxSwitch" role="switch" aria-checked="true"><i></i></button></div>
+        <button class="primary-button full" id="resumeButton">繼續散步</button><button class="secondary-button full" id="restartButton">從頭再走一次</button><button class="subtle-button" id="clearSaveButton">清除這個瀏覽器的進度</button>
+      </section>
+    </div>
+
+    <div class="screen hidden" id="endingScreen" role="dialog" aria-modal="true" aria-labelledby="endingTitle">
+      <section class="ending-card"><div class="ending-sun">☼</div><span class="eyebrow">旅程的最後一站</span><h2 id="endingTitle">有些事，可以一起完成。<br><em>休息，也可以現在開始。</em></h2><p id="endingCopy">小狐狸把毯子鋪好，接手整理剩下的東西。媽媽靠在樹下，聽風穿過樹梢，安心地休息了一會兒。</p><div class="ending-collection" id="endingCollection"></div><div class="unlock-note hidden" id="unlockNote">✦ 你解鎖了重玩卡「晨光回憶」！下次散步時，可以帶著這份溫柔出發。</div><button class="primary-button" id="replayButton">再走一次 <span>→</span></button><button class="subtle-button" id="endingHomeButton">回到小徑入口</button><small class="credit">v1.0.0　·　中揚資訊</small></section>
+    </div>
+
+    <div class="screen hidden" id="helpScreen" role="dialog" aria-modal="true" aria-labelledby="helpTitle">
+      <section class="small-modal help-modal"><button class="close-button" id="closeHelp" aria-label="關閉">×</button><span class="eyebrow">不用記太多規則</span><h2 id="helpTitle">卡牌是口袋裡的小幫手</h2><p>事件出現時，可以用一張卡處理，也可以選普通做法。每張打出的卡會用過一次；不合適也不會讓旅程失敗。</p><p>手牌最多三張，沿路找到新卡時，如果口袋滿了，可以選一張替換。卡牌組合只會在有提示的事件出現。</p><button class="primary-button full" id="closeHelpButton">知道了</button></section>
+    </div>
+  </main>
+  <script type="module" src="./src/main.js"></script>
+</body>
+</html>
